@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: learner-report-frontend
+  template:
+    metadata:
+      labels:
+        app: learner-report-frontend
+    spec:
+      containers:
+      - name: learner-report-frontend
+        image: surendergupta/learnercs_fe
+        resources:
+          requests:
+            memory: "256Mi"   # Increase memory request
+          limits:
+            memory: "512Mi"   # Increase memory limit        
+            cpu: "500m"
+        ports:
+        - containerPort: 3000

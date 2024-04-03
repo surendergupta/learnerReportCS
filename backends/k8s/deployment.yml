@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: learner-report-backend
+  template:
+    metadata:
+      labels:
+        app: learner-report-backend
+    spec:
+      containers:
+      - name: learner-report-backend
+        image: surendergupta/learnercs_be
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
