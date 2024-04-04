@@ -6,5 +6,5 @@ spec:
   selector:
     app: learner-report-backend
   ports:
-  - port: 3000
+  - port: 5000
     targetPort: 5000

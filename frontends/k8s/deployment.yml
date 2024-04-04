@@ -17,9 +17,9 @@ spec:
         image: surendergupta/learnercs_fe
         resources:
           requests:
-            memory: "256Mi"   # Increase memory request
+            memory: "512Mi"   # Increase memory request
           limits:
             memory: "512Mi"   # Increase memory limit        
-            cpu: "500m"
+            cpu: "1000m"
         ports:
         - containerPort: 3000
