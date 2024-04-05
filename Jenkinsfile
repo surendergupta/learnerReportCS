@@ -5,21 +5,23 @@ def COLOR_MAP = [
 
 pipeline {
     agent any
-
+    
     environment {
+        
         DOCKER_HUB_KEY = credentials('dockerhubcredentials')
-        DOCKER_IMAGE_FRONTEND = 'surendergupta/learnercs-fe'
-        DOCKER_IMAGE_BACKEND = 'surendergupta/learnercs-be'
+        DOCKER_IMAGE_FRONTEND = 'surendergupta/learnercs_fe'
+        DOCKER_IMAGE_BACKEND = 'surendergupta/learnercs_be'
         GITHUB_URL = 'https://github.com/surendergupta/learnerReportCS.git'
         GIT_BRANCH = 'main'
         DOCKER_TAG = "${env.BUILD_ID}"
-        KUBE_CONFIG = credentials('kubeconfig')
-        HELM_CHART_PATH_BE = './learner-chart/backend-chart'
-        HELM_CHART_PATH_FE = './learner-chart/frontend-chart'
+        KUBECONFIG = credentials('kubeconfig')
+        HELM_CHART_PATH_BE = './learner-charts/backend-chart'
+        HELM_CHART_PATH_FE = './learner-charts/frontend-chart'
         HELM_RELEASE_NAME_BE = 'backend-chart'
         HELM_RELEASE_NAME_FE = 'frontend-chart'
+        KUBE_NAMESPACE = 'default'
     }
-
+    
     stages {
         stage('Checkout from Git'){
             steps{
@@ -38,7 +40,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Docker Image And Push') {
+        stage('Build Docker Image') {
             parallel {
                 stage('build backend') {
                     steps {
@@ -65,40 +67,27 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             steps {
-                // Set kubectl config
-                withCredentials([kubeconfigContent(credentialsId: 'kubeconfig', variable: 'KUBE_CONFIG')]) {
-                    sh """
-                        echo "\$KUBE_CONFIG" > kubeconfig
-                        export KUBECONFIG=\$(pwd)/kubeconfig
-                    """
-                }
-                // Deploy frontend and backend using kubectl or HELM
-                sh """
-                    kubectl apply -f ./frontends/k8s/deployment.yml
-                    kubectl apply -f ./frontends/k8s/service.yml
-                    kubectl apply -f ./backends/k8s/deployment.yml
-                    kubectl apply -f ./backends/k8s/service.yml
-                    
-                """
-
-                // Deploy using HELM
-                sh """
-                    helm upgrade --install your-mern-app ./helm-chart \
-                        --set frontend.image.repository=your-frontend-image \
-                        --set frontend.image.tag=latest \
-                        --set backend.image.repository=your-backend-image \
-                        --set backend.image.tag=latest
-                """
-
-                // Set KUBECONFIG environment variable
-                withEnv(["KUBECONFIG=${env.KUBE_CONFIG}"]) {
-                    // Deploy using kubectl or Helm
-                    sh "helm upgrade --install --set backend-chart.image.tag=${env.DOCKER_TAG} ${env.HELM_RELEASE_NAME_BE} ${env.HELM_CHART_PATH_BE}"
-                    sh "helm upgrade --install --set frontend-chart.image.tag=${env.DOCKER_TAG} ${env.HELM_RELEASE_NAME_FE} ${env.HELM_CHART_PATH_FE}"                    
-                    // sh "kubectl port-forward service/backend-chart 5000:5000"
-                    // sh "kubectl port-forward service/frontend-chart 3000:3000"
+                script {
+                    // Set KUBECONFIG environment variable
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                        bat "helm upgrade --install --set image.tag=${env.DOCKER_TAG} ${env.HELM_RELEASE_NAME_BE} ${env.HELM_CHART_PATH_BE}"
+                        bat "helm upgrade --install --set image.tag=${env.DOCKER_TAG} ${env.HELM_RELEASE_NAME_FE} ${env.HELM_CHART_PATH_FE}"
+                        // sh "kubectl port-forward service/backend-chart 5000:5000"
+                        // sh "kubectl port-forward service/frontend-chart 3000:3000"                        
+                    }
                 }
             }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Slack Notifications'
+            slackSend (
+                channel: '#slack-jenkins',
+                color: COLOR_MAP[currentBuild.currentResult],
+                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} \n build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+            )
         }
     }
 }
