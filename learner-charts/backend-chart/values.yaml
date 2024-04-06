@@ -55,10 +55,10 @@ ingress:
       paths:
         - path: /api
           pathType: ImplementationSpecific
-  tls: 
-    # - secretName: tls-secret
-      hosts:
-        - cloudcrypto.in
+  # tls: 
+  #   # - secretName: tls-secret
+  #     hosts:
+  #       - cloudcrypto.in
 
 resources: 
   # We usually recommend not to specify default resources and to leave this as a conscious
