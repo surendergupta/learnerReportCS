@@ -34,7 +34,7 @@ spec:
         {{- range $ingressHosts }}
         - {{ .host | quote }}
         {{- end }}
-      secretName: {{ .secretName }}
+      # secretName: {{ .secretName }}
     {{- end }}
   {{- end }}
   rules:
