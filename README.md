@@ -6,6 +6,8 @@
    - Create two Git repositories, one for the frontend and one for the backend:
      - [Frontend Repository](https://github.com/UnpredictablePrashant/learnerReportCS_frontend)
      - [Backend Repository](https://github.com/UnpredictablePrashant/learnerReportCS_backend)
+   - We use this repo in Our Project
+     - [learnerReportCS] (https://github.com/surendergupta/learnerReportCS.git)
 
 2. **Directory Structure**:
    - Inside your local directory, create folders named `frontend` and `backend`.
