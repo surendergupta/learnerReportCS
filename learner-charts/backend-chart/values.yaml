@@ -41,7 +41,6 @@ securityContext: {}
 
 service:
   type: LoadBalancer
-  loadBalancerType: application
   port: 5000
   targetPort: 5000
 
@@ -49,8 +48,8 @@ ingress:
   enabled: true
   className: ""
   annotations: 
-    kubernetes.io/ingress.class: alb
-    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: alb    
+    service.beta.kubernetes.io/aws-load-balancer-type: "application"
   hosts:
     - host: cloudcrypto.in
       paths:
