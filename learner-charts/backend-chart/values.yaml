@@ -48,7 +48,7 @@ ingress:
   enabled: true
   className: ""
   annotations: 
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: alb
     kubernetes.io/tls-acme: "true"
   hosts:
     - host: cloudcrypto.in
