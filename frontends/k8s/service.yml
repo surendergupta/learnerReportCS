@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: frontend-service
 spec:
+  type: LoadBalancer
   selector:
     app: learner-report-frontend
   ports:
