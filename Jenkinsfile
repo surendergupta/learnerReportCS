@@ -115,9 +115,18 @@ pipeline {
             steps {
                 script {
                     withCredentials([aws(credentialsId: 'aws-config', region: env.AWS_REGION )]) {
+                        // Delete Helm releases
+                        bat "helm --uninstall ${env.HELM_RELEASE_NAME_BE}"
+                        bat "helm --uninstall ${env.HELM_RELEASE_NAME_FE}"
+                        
                         bat "aws eks --region ${env.AWS_REGION} update-kubeconfig --name ${env.AWS_EKS_CLUSTER_NAME}"
                         bat "helm upgrade --install --set image.tag=${env.DOCKER_TAG} ${env.HELM_RELEASE_NAME_BE} ${env.HELM_CHART_PATH_BE}"
                         bat "helm upgrade --install --set image.tag=${env.DOCKER_TAG} ${env.HELM_RELEASE_NAME_FE} ${env.HELM_CHART_PATH_FE}"
+
+                        // bat "kubectl apply -f ./backends/k8s/deployment.yml"
+                        // bat "kubectl apply -f ./backends/k8s/service.yml"
+                        // bat "kubectl apply -f ./frontends/k8s/deployment.yml"
+                        // bat "kubectl apply -f ./frontends/k8s/service.yml"
                     }
                 }
             }
@@ -132,6 +141,7 @@ pipeline {
                         bat "helm --uninstall ${env.HELM_RELEASE_NAME_FE}"
                         
                         // Delete the EKS cluster
+                        bat "aws eks --region ${env.AWS_REGION} delete-nodegroup --cluster-name ${env.AWS_EKS_CLUSTER_NAME} --nodegroup-name standard-workers --wait"
                         bat "aws eks --region ${env.AWS_REGION} delete-cluster --name ${env.AWS_EKS_CLUSTER_NAME}"
                     }
                 }
