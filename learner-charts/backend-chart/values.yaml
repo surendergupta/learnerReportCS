@@ -40,7 +40,8 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: LoadBalancer 
+  type: LoadBalancer
+  loadBalancerType: application
   port: 5000
   targetPort: 5000
 

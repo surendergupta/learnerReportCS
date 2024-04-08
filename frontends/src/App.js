@@ -1,7 +1,10 @@
 import "./App.css";
 import AdminDashboard from "./components/AdminDashboard/adminDashboard";
 import Users from "./components/Users/Users";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, 
+  Route, 
+  // Navigate 
+} from "react-router-dom";
 import NavBar from "./components/NavBar/navBar";
 import FacultyNavbar from "./components/NavBar/FacultyNavbar";
 import { CssBaseline } from "@mui/material";
@@ -10,10 +13,11 @@ import Faculty from "./components/Users/Faculty";
 import Career from "./components/Users/Career";
 import UserRegistration from "./components/code/UserRegistrationUI";
 import Login from "./components/Login/Login";
-import { useContext, useEffect, useState } from "react";
+// import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import QuestionUpload from "./components/FacultyDashboard.js/QuestionUploadForm/QuestionUpload";
 import DataContext from "./context/DataContext";
-import axios from 'axios';
+// import axios from 'axios';
 import FacultyDashboard from "./components/FacultyDashboard.js/adminDashboard";
 import StudentDashboard from "./components/StudentDashboard/StudentDashboard";
 import StudentNav from "./components/NavBar/StudentNav";

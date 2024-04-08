@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 // import { getUsers } from "../../api/queries";
 import { DataGrid } from "@mui/x-data-grid";
 import Avatar from "@mui/material/Avatar";
-import SearchIcon from "@mui/icons-material/Search";
+//import SearchIcon from "@mui/icons-material/Search";
 import { Box } from "@mui/system";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import { Button, Typography } from "@mui/material";
-import { faker } from "@faker-js/faker";
+// import TextField from "@mui/material/TextField";
+// import InputAdornment from "@mui/material/InputAdornment";
+// import { Button, Typography } from "@mui/material";
+// import { faker } from "@faker-js/faker";
 import axios from "axios";
 import { GridToolbar } from '@mui/x-data-grid';
 
@@ -92,13 +92,13 @@ const columns = [
 ];
 
 const Career = (props) => {
- let id= faker.datatype.uuid()
+  // let id= faker.datatype.uuid()
   const [listOfUsers, setListOfUsers] = useState([]);
 
   useEffect(() => {
   
     async function fetchUsers() {
-      let res = await axios.get("http://localhost:3000/careerService/getcareer")
+      let res = await axios.get("http://localhost:5000/careerService/getcareer")
       setListOfUsers(res.data.result);
     }
     fetchUsers()

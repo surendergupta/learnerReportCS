@@ -19,7 +19,7 @@ export default function UserRegistration() {
 
   const handleChange = (event) => {
     settype(event.target.value);
-    setUrl(`http://localhost:3000/${event.target.value}/register`);
+    setUrl(`http://localhost:5000/${event.target.value}/register`);
   };
 
   const handleRegister = async(event) => {

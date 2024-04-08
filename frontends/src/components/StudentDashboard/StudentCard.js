@@ -1,9 +1,10 @@
-import React,{useEffect,useState,useContext} from 'react'
+// import React,{useEffect,useState,useContext} from 'react'
+import React,{useContext} from 'react'
 import Avatar from '@material-ui/core/Avatar';
 import { Card, CardContent, Typography, Container, Grid } from "@mui/material";
-import { Box } from "@mui/system";
+// import { Box } from "@mui/system";
 import DataContext from '../../context/DataContext';
-import { getStudentDashboardData } from "../../api/queries";
+// import { getStudentDashboardData } from "../../api/queries";
 export default function StudentCard() {
     // const [dashBoardData, setDashboardData] = useState([]);
     const ctx = useContext(DataContext)

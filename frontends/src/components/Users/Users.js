@@ -1,13 +1,15 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, 
+  // useState,
+  useContext } from "react";
 // import { getUsers } from "../../api/queries";
 import { DataGrid } from "@mui/x-data-grid";
-import Avatar from "@mui/material/Avatar";
-import SearchIcon from "@mui/icons-material/Search";
+// import Avatar from "@mui/material/Avatar";
+// import SearchIcon from "@mui/icons-material/Search";
 import { Box } from "@mui/system";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import { Button, Typography } from "@mui/material";
-import { faker } from "@faker-js/faker";
+// import TextField from "@mui/material/TextField";
+// import InputAdornment from "@mui/material/InputAdornment";
+// import { Button, Typography } from "@mui/material";
+// import { faker } from "@faker-js/faker";
 import axios from "axios";
 import DataContext from "../../context/DataContext";
 import { GridToolbar } from '@mui/x-data-grid';
@@ -94,18 +96,16 @@ const columns = [
 
 const Users = (props) => {
   const ctx = useContext(DataContext);
- 
+ // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
   
     async function fetchUsers() {
-      let res = await axios.get("http://localhost:3000/student/getstudent")
+      let res = await axios.get("http://localhost:5000/student/getstudent")
       console.log(res.data);
       ctx.setListOfUsers(res.data);
     }
     fetchUsers()
-   
-
-  }, []);
+  }, [ctx]);
   
 
 

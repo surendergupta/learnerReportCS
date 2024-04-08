@@ -35,7 +35,7 @@ const Level = [
 export default function QuestionUpload() {
     const classes = useStyles();
     const [value, setValue] = React.useState({});
-    const [level, setLevel] = React.useState("")
+    // const [level, setLevel] = React.useState("")
     const [msg,setMsg]=React.useState("")
     const handleChange = (event) => {
         console.log(event.target.name ," ",event.target.value);
@@ -53,7 +53,7 @@ export default function QuestionUpload() {
             return;
         }
         let total_marks =parseInt(value.total_marks)
-        let res = await axios.post("http://localhost:3000/uploadQuestion", {
+        let res = await axios.post("http://localhost:5000/uploadQuestion", {
             question_title: value.question_title,
             question: value.question,
             tag_level: value.tag_level,

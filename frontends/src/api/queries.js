@@ -17,7 +17,7 @@ export async function getStudentDashboardData() {
 
 export async function getUsers() {
   try {
-    const response = await fetch("http://localhost:3000/student/getstudent");
+    const response = await fetch("http://localhost:5000/student/getstudent");
     return await response.data.json();
   } catch (error) {
     return [];

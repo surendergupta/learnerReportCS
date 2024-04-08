@@ -1,7 +1,7 @@
 import React from "react";
 import { Drawer, AppBar, Toolbar, Box, IconButton } from "@mui/material";
-import LanguageIcon from "@mui/icons-material/Language";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+// import LanguageIcon from "@mui/icons-material/Language";
+// import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SearchIcon from "@mui/icons-material/Search";
 import SideBar from "../SideBar/sideBar";

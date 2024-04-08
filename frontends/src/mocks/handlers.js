@@ -1,5 +1,5 @@
 import { rest } from "msw";
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 
 
 const dashBoardInfo = [
