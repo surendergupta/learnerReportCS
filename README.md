@@ -296,15 +296,15 @@ pipeline {
         DOCKER_HUB_KEY = credentials('dockerhubcredentials')
         DOCKER_IMAGE_FRONTEND = 'surendergupta/learnercs_fe'
         DOCKER_IMAGE_BACKEND = 'surendergupta/learnercs_be'
-        DOCKER_TAG = "${env.BUILD_ID}"
+        DOCKER_TAG = "latest"
         
         GITHUB_URL = 'https://github.com/surendergupta/learnerReportCS.git'
         GIT_BRANCH = 'main'
         
-        HELM_CHART_PATH_BE = 'container-orchestration-chart'
-        HELM_RELEASE_NAME_BE = 'container-orchestration-chart'
+        HELM_CHART_PATH = './container-orchestration-chart'
+        HELM_RELEASE_NAME = 'container-orchestration-chart'
 
-        AWS_REGION = 'us-east-1'
+        AWS_REGION = 'us-west-2'
         AWS_EKS_CLUSTER_NAME = 'container-orchestration-cluster'
     }
     
@@ -328,7 +328,7 @@ pipeline {
                     steps {
                         script {
                             docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcredentials') {
-                                def customImage = docker.build("${env.DOCKER_IMAGE_BACKEND}:${env.BUILD_ID}", "./backends") 
+                                def customImage = docker.build("${env.DOCKER_IMAGE_BACKEND}:${env.DOCKER_TAG}", "./backends") 
                                 customImage.push()
                             }
                         }
@@ -339,7 +339,7 @@ pipeline {
                     steps {
                         script {
                             docker.withRegistry('https://index.docker.io/v1/', 'dockerhubcredentials') {
-                                def customImage = docker.build("${env.DOCKER_IMAGE_FRONTEND}:${env.BUILD_ID}", "./frontends")
+                                def customImage = docker.build("${env.DOCKER_IMAGE_FRONTEND}:${env.DOCKER_TAG}", "./frontends")
                                 customImage.push()
                             }
                         }
@@ -357,7 +357,7 @@ pipeline {
                         def eksClusterExists = bat(script: "aws eks describe-cluster --name ${env.AWS_EKS_CLUSTER_NAME} --region ${env.AWS_REGION}", returnStatus: true) == 0
                         if (!eksClusterExists) {
                             bat """
-                            eksctl create cluster --name ${env.AWS_EKS_CLUSTER_NAME} --region ${env.AWS_REGION} --nodegroup-name standard-workers --node-type t2.micro --nodes 3 --nodes-min 2 --nodes-max 5
+                            eksctl create cluster --name ${env.AWS_EKS_CLUSTER_NAME} --region ${env.AWS_REGION} --nodegroup-name standard-workers --node-type t2.medium --nodes 2 --nodes-min 3 --nodes-max 5
                             """
                         }
                     }
@@ -370,7 +370,7 @@ pipeline {
                 script {
                     withCredentials([aws(credentialsId: 'aws-config', region: env.AWS_REGION )]) {
                         bat "aws eks --region ${env.AWS_REGION} update-kubeconfig --name ${env.AWS_EKS_CLUSTER_NAME}"
-                        bat "helm install ${env.HELM_RELEASE_NAME_BE} ${env.HELM_CHART_PATH_BE}"
+                        bat "helm install ${env.HELM_RELEASE_NAME} ${env.HELM_CHART_PATH}"
                     }
                 }
             }
@@ -380,7 +380,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([aws(credentialsId: 'aws-config', region: env.AWS_REGION )]) {
-                        bat "helm uninstall ${env.HELM_RELEASE_NAME_BE}"
+                        bat "helm uninstall ${env.HELM_RELEASE_NAME}"
                     }
                 }
             }
@@ -388,5 +388,11 @@ pipeline {
     }
 }
 ```
+
+![alt text](image-12.png)
+
+![alt text](image-13.png)
+
+
 
 By following these steps, you can effectively manage your frontend and backend services, deploy them on Kubernetes locally using Minikube, and automate the deployment process using Jenkins pipelines, including deployment on AWS EKS.
