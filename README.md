@@ -140,11 +140,11 @@ helm uninstall container-orchestration-chart
 kubectl get svc
 kubectl port-forward service/container-orchestration-chart-learnercs-be-svc 5000:3001
 ```
-![alt text](image.png)
+![alt text](./screenshots/image.png)
 
-![alt text](image-1.png)
+![alt text](./screenshots/image-1.png)
 
-![alt text](image-2.png)
+![alt text](./screenshots/image-2.png)
 
    - Frontend Deployment Using Helm On Minikube Locally
 
@@ -153,9 +153,9 @@ kubectl get svc
 kubectl port-forward service/container-orchestration-chart-learnercs-fe-svc 3002:3000
 ```
 
-![alt text](image-3.png)
+![alt text](./screenshots/image-3.png)
 
-![alt text](image-4.png)
+![alt text](./screenshots/image-4.png)
 
 9. **Jenkins Pipeline**:
    - Set up a Jenkins pipeline on your localhost.
@@ -257,9 +257,9 @@ pipeline {
 
 ```
 
-![alt text](image-5.png)
+![alt text](./screenshots/image-5.png)
 
-![alt text](image-6.png)
+![alt text](./screenshots/image-6.png)
 
 
 ```
@@ -268,15 +268,15 @@ kubectl port-forward service/container-orchestration-chart-learnercs-fe-svc 3002
 
 ```
 
-![alt text](image-7.png)
+![alt text](./screenshots/image-7.png)
 
-![alt text](image-8.png)
+![alt text](./screenshots/image-8.png)
 
-![alt text](image-9.png)
+![alt text](./screenshots/image-9.png)
 
-![alt text](image-10.png)
+![alt text](./screenshots/image-10.png)
 
-![alt text](image-11.png)
+![alt text](./screenshots/image-11.png)
 
 10. **Deployment on AWS EKS**:
     - Use EKSCTL to create an AWS EKS cluster.
@@ -357,7 +357,7 @@ pipeline {
                         def eksClusterExists = bat(script: "aws eks describe-cluster --name ${env.AWS_EKS_CLUSTER_NAME} --region ${env.AWS_REGION}", returnStatus: true) == 0
                         if (!eksClusterExists) {
                             bat """
-                            eksctl create cluster --name ${env.AWS_EKS_CLUSTER_NAME} --region ${env.AWS_REGION} --nodegroup-name standard-workers --node-type t2.medium --nodes 2 --nodes-min 3 --nodes-max 5
+                            eksctl create cluster --name ${env.AWS_EKS_CLUSTER_NAME} --region ${env.AWS_REGION} --nodegroup-name standard-workers --node-type t2.medium --nodes 3 --nodes-min 3 --nodes-max 5
                             """
                         }
                     }
@@ -389,32 +389,30 @@ pipeline {
 }
 ```
 
-![alt text](image-12.png)
+![alt text](./screenshots/image-12.png)
 
-![alt text](image-13.png)
+![alt text](./screenshots/image-13.png)
 
-![alt text](image-14.png)
+![alt text](./screenshots/image-14.png)
 
-![alt text](image-15.png)
+![alt text](./screenshots/image-15.png)
 
-![alt text](image-16.png)
+![alt text](./screenshots/image-16.png)
 
-![alt text](image-17.png)
+![alt text](./screenshots/image-17.png)
 
-![alt text](image-18.png)
+![alt text](./screenshots/image-18.png)
 
-![alt text](image-19.png)
+![alt text](./screenshots/image-19.png)
 
-![alt text](image-20.png)
+![alt text](./screenshots/image-20.png)
 
-![alt text](image-21.png)
+![alt text](./screenshots/image-21.png)
 
-![alt text](image-22.png)
+![alt text](./screenshots/image-22.png)
 
-![alt text](image-23.png)
+![alt text](./screenshots/image-23.png)
 
-![alt text](image-24.png)
-
-
+![alt text](./screenshots/image-24.png)
 
 By following these steps, you can effectively manage your frontend and backend services, deploy them on Kubernetes locally using Minikube, and automate the deployment process using Jenkins pipelines, including deployment on AWS EKS.
