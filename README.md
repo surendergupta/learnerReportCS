@@ -415,4 +415,6 @@ pipeline {
 
 ![alt text](./screenshots/image-24.png)
 
+![alt text](./screenshots/image-25.png)
+
 By following these steps, you can effectively manage your frontend and backend services, deploy them on Kubernetes locally using Minikube, and automate the deployment process using Jenkins pipelines, including deployment on AWS EKS.
