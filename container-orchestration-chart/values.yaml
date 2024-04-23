@@ -1,0 +1,35 @@
+backend:
+  replicaCount: 2
+  repository: "surendergupta/learnercs_be:latest"
+  pullPolicy: Always
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  service:
+    type: ClusterIP
+    port: 3001
+    targetPort: 5000
+
+  ingress:
+    host: api.cloudcrypto.local
+    path: "/"
+    
+  
+
+frontend:
+  replicaCount: 1
+  repository: "surendergupta/learnercs_fe:latest"
+  pullPolicy: Always
+
+  service:
+    type: ClusterIP
+    port: 3000
+    targetPort: 3000
+  
+  ingress:
+    host: cloudcrypto.local
+    path: "/"
