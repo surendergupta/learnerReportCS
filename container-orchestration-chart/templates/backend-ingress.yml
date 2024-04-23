@@ -4,13 +4,13 @@ metadata:
   name: {{ include "container-orchestration-chart.fullname" . }}-learnercs-be-ingress
 spec:
   rules:
-    - host: {{ .Values.backend.ingress.host }}
+    - host: hello.cloudcrypto.in
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: learnercs-be
+                name: {{ include "container-orchestration-chart.fullname" . }}-learnercs-be
                 port:
                   number: 80

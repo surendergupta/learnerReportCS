@@ -4,13 +4,14 @@ metadata:
   name: {{ include "container-orchestration-chart.fullname" . }}-learnercs-fe-ingress
 spec:
   rules:
-    - host: {{ .Values.frontend.ingress.host }}
+    - host: cloudcrypto.in
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: learnercs-fe
+                name: {{ include "container-orchestration-chart.fullname" . }}-learnercs-fe
                 port:
                   number: 80
+                  

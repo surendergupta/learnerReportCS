@@ -10,15 +10,9 @@ backend:
       cpu: 500m
       memory: 512Mi
   service:
-    type: ClusterIP
-    port: 3001
+    type: LoadBalancer
+    port: 80
     targetPort: 5000
-
-  ingress:
-    host: api.cloudcrypto.local
-    path: "/"
-    
-  
 
 frontend:
   replicaCount: 1
@@ -26,10 +20,6 @@ frontend:
   pullPolicy: Always
 
   service:
-    type: ClusterIP
-    port: 3000
+    type: LoadBalancer
+    port: 80
     targetPort: 3000
-  
-  ingress:
-    host: cloudcrypto.local
-    path: "/"

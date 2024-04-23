@@ -182,7 +182,7 @@ pipeline {
         KUBECONFIG = credentials('kubeconfig')
         KUBE_NAMESPACE = 'default'
         
-        HELM_CHART_PATH = 'container-orchestration-chart'
+        HELM_CHART_PATH = './container-orchestration-chart'
         HELM_RELEASE_NAME = 'container-orchestration-chart'
     }
     
@@ -233,8 +233,6 @@ pipeline {
                         bat "helm package ${env.HELM_RELEASE_NAME}"
                         bat "helm template ${env.HELM_RELEASE_NAME}  > manifests.yaml"
                         bat "helm install ${env.HELM_RELEASE_NAME} ${env.HELM_CHART_PATH}"
-                        bat "kubectl port-forward service/container-orchestration-chart-learnercs-be-svc 5000:3001 &"
-                        bat "kubectl port-forward service/container-orchestration-chart-learnercs-fe-svc 3002:3000 &"                        
                     }
                 }
             }
@@ -244,7 +242,12 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                        bat "helm uninstall ${env.HELM_RELEASE_NAME} ${env.HELM_CHART_PATH}"
+                        def releaseExists = bat(script: "helm list -q | grep -x ${env.HELM_RELEASE_NAME}", returnStatus: true) == 0
+                        if (releaseExists) {
+                            bat "helm uninstall ${env.HELM_RELEASE_NAME}"
+                        } else {
+                            echo "Release ${env.HELM_RELEASE_NAME} not found, skipping uninstallation."
+                        }
                     }
                 }
             }
@@ -256,8 +259,24 @@ pipeline {
 
 ![alt text](image-5.png)
 
+![alt text](image-6.png)
 
 
+```
+kubectl port-forward service/container-orchestration-chart-learnercs-be-svc 5000:3001
+kubectl port-forward service/container-orchestration-chart-learnercs-fe-svc 3002:3000
+
+```
+
+![alt text](image-7.png)
+
+![alt text](image-8.png)
+
+![alt text](image-9.png)
+
+![alt text](image-10.png)
+
+![alt text](image-11.png)
 
 10. **Deployment on AWS EKS**:
     - Use EKSCTL to create an AWS EKS cluster.
@@ -351,7 +370,7 @@ pipeline {
                 script {
                     withCredentials([aws(credentialsId: 'aws-config', region: env.AWS_REGION )]) {
                         bat "aws eks --region ${env.AWS_REGION} update-kubeconfig --name ${env.AWS_EKS_CLUSTER_NAME}"
-                        bat "helm install --set frontend.image="${env.DOCKER_IMAGE_FRONTEND}:${env.DOCKER_TAG}" --set backend.image="${env.DOCKER_IMAGE_BACKEND}:${env.DOCKER_TAG}" ${env.HELM_RELEASE_NAME_BE} ${env.HELM_CHART_PATH_BE}"
+                        bat "helm install ${env.HELM_RELEASE_NAME_BE} ${env.HELM_CHART_PATH_BE}"
                     }
                 }
             }
@@ -361,7 +380,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([aws(credentialsId: 'aws-config', region: env.AWS_REGION )]) {
-                        bat "helm uninstall ${env.HELM_RELEASE_NAME_BE} ${env.HELM_CHART_PATH_BE}"
+                        bat "helm uninstall ${env.HELM_RELEASE_NAME_BE}"
                     }
                 }
             }
